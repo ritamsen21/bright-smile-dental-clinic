@@ -1,0 +1,52 @@
+{
+  "$schema": "https://render.com/schema/v1",
+  "services": [
+    {
+      "type": "web",
+      "name": "bright-smile-backend",
+      "env": "node",
+      "region": "oregon",
+      "plan": "free",
+      "buildCommand": "cd backend && npm install && npm run build",
+      "startCommand": "cd backend && npm start",
+      "envVars": [
+        {
+          "key": "NODE_ENV",
+          "value": "production"
+        },
+        {
+          "key": "PORT",
+          "value": "4000"
+        },
+        {
+          "key": "MONGODB_URI",
+          "generateValue": false
+        },
+        {
+          "key": "CORS_ORIGIN",
+          "value": "https://ritamsen21.github.io"
+        },
+        {
+          "key": "JWT_SECRET",
+          "generateValue": true
+        },
+        {
+          "key": "EMAIL_HOST",
+          "value": "smtp.gmail.com"
+        },
+        {
+          "key": "EMAIL_PORT",
+          "value": "587"
+        },
+        {
+          "key": "EMAIL_USER",
+          "generateValue": false
+        },
+        {
+          "key": "EMAIL_PASSWORD",
+          "generateValue": false
+        }
+      ]
+    }
+  ]
+}
