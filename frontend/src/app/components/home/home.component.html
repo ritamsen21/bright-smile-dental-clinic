@@ -1,0 +1,259 @@
+<div class="home-container">
+  <header class="hero">
+    <div class="hero-carousel">
+      <div class="carousel-slide active"></div>
+      <div class="carousel-slide"></div>
+      <div class="carousel-slide"></div>
+    </div>
+    <div class="hero-overlay"></div>
+    <div class="hero-nav">
+      <div class="social-links">
+        <a href="https://wa.me/919876543210" target="_blank" class="social-link whatsapp" title="WhatsApp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+        <a href="https://www.linkedin.com/in/dr-arna-mal" target="_blank" class="social-link linkedin" title="LinkedIn">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </div>
+      <a routerLink="/doctor/login" class="nav-link doctor-login">
+        <i class="fas fa-user-md"></i> Doctor Login
+      </a>
+    </div>
+    <div class="hero-content">
+      <div class="hero-icon"><i class="fas fa-tooth"></i></div>
+      <h1><i class="fas fa-clinic-medical"></i> Bright Smile Dental Clinic</h1>
+      <p class="tagline">Your Path to a Perfect Smile</p>
+    </div>
+  </header>
+
+  <div class="content" *ngIf="!loading">
+    <section class="doctor-section" *ngIf="doctor">
+      <div class="doctor-card">
+        <div class="doctor-profile">
+          <div class="doctor-photo">
+            <img src="/arna.jpg" alt="Dr. Arna Mal" />
+          </div>
+          <div class="doctor-details">
+            <div class="doctor-header">
+              <h2>{{ doctor.name }}</h2>
+              <p class="qualification"><i class="fas fa-graduation-cap"></i> {{ doctor.qualification }}</p>
+            </div>
+
+                <div class="doctor-info">
+              <div class="info-row">
+                <i class="fas fa-user-clock"></i>
+                <div class="info-content">
+                  <strong>Experience</strong>
+                  <span>{{ doctor.experienceYears }} years</span>
+                </div>
+              </div>
+              <div class="info-row">
+                <i class="fas fa-stethoscope"></i>
+                <div class="info-content">
+                  <strong>Specializations</strong>
+                  <span>{{ doctor.specializations.join(', ') }}</span>
+                </div>
+              </div>
+              <div class="info-row">
+                <i class="fas fa-rupee-sign"></i>
+                <div class="info-content">
+                  <strong>Consultation Fee</strong>
+                  <span class="fee">₹{{ doctor.visitFee }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="bio">
+              <h3><i class="fas fa-info-circle"></i> About Doctor</h3>
+              <p>{{ doctor.bio }}</p>
+            </div>
+
+            <div class="working-hours">
+              <h3><i class="fas fa-clock"></i> Working Hours</h3>
+              <div class="hours-list" *ngIf="doctor.workingHours.length > 0">
+                <div class="hour-item" *ngFor="let hour of doctor.workingHours">
+                  <span class="day"><i class="fas fa-calendar-day"></i> {{ getDayName(hour.day) }}</span>
+                  <span class="time">{{ hour.start }} - {{ hour.end }}</span>
+                </div>
+              </div>
+              <p *ngIf="doctor.workingHours.length === 0" class="no-hours">
+                Schedule not available
+              </p>
+            </div>
+
+            <div class="contact">
+              <h3><i class="fas fa-address-card"></i> Contact Information</h3>
+              <div class="contact-item">
+                <i class="fas fa-phone-alt"></i>
+                <div class="contact-content">
+                  <strong>Phone</strong>
+                  <span>{{ doctor?.contact?.phone }}</span>
+                </div>
+              </div>
+              <div class="contact-item">
+                <i class="fas fa-envelope"></i>
+                <div class="contact-content">
+                  <strong>Email</strong>
+                  <span>{{ doctor?.contact?.email }}</span>
+                </div>
+              </div>
+              <div class="contact-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <div class="contact-content">
+                  <strong>Address</strong>
+                  <span>{{ doctor?.contact?.address }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="cta">
+              <a routerLink="/book-appointment" class="btn-primary">
+                <i class="fas fa-calendar-check"></i> 
+                <span>Book Appointment</span>
+                <i class="fas fa-arrow-right"></i>
+              </a>
+              <a routerLink="/appointments" class="btn-secondary-nav">
+                <i class="fas fa-list-alt"></i> 
+                <span>My Appointments</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services-section">
+      <div class="section-header">
+        <h2><i class="fas fa-tooth"></i> Our Dental Services</h2>
+        <p>Comprehensive dental care under one roof</p>
+      </div>
+      <div class="services-grid">
+        <div class="service-card" *ngFor="let service of services">
+          <div class="service-icon" [innerHTML]="service.icon"></div>
+          <h3>{{ service.name }}</h3>
+          <p>{{ service.description }}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+      <div class="stat-item">
+        <i class="fas fa-user-md"></i>
+        <h3>Dedicated Doctor</h3>
+        <p class="stat-number">01</p>
+      </div>
+      <div class="stat-item">
+        <i class="fas fa-award"></i>
+        <h3>Years of Experience</h3>
+        <p class="stat-number">{{ doctor?.experienceYears }}+</p>
+      </div>
+      <div class="stat-item">
+        <i class="fas fa-smile-beam"></i>
+        <h3>Happy Patients</h3>
+        <p class="stat-number">500+</p>
+      </div>
+      <div class="stat-item">
+        <i class="fas fa-star"></i>
+        <h3>5-Star Reviews</h3>
+        <p class="stat-number">150+</p>
+      </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section class="why-choose-section">
+      <div class="section-header">
+        <h2><i class="fas fa-heart"></i> Why Choose Bright Smile Dental Clinic</h2>
+        <p>We are committed to excellence in dental care</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-item">
+          <i class="fas fa-check-circle"></i>
+          <h3>Experienced Dental Specialists</h3>
+          <p>Highly skilled dentist with years of experience and commitment to clinical excellence.</p>
+        </div>
+        <div class="feature-item">
+          <i class="fas fa-check-circle"></i>
+          <h3>Advanced & Painless Treatment</h3>
+          <p>Cutting-edge equipment ensuring fast, safe, and pain-free dental procedures.</p>
+        </div>
+        <div class="feature-item">
+          <i class="fas fa-check-circle"></i>
+          <h3>Affordable Dental Care</h3>
+          <p>Quality dentistry accessible to everyone with transparent pricing.</p>
+        </div>
+        <div class="feature-item">
+          <i class="fas fa-check-circle"></i>
+          <h3>Prime Location & Easy Access</h3>
+          <p>Convenient location at {{ doctor?.contact?.address }} with flexible appointment timings.</p>
+        </div>
+        <div class="feature-item">
+          <i class="fas fa-check-circle"></i>
+          <h3>State-of-the-Art Equipment</h3>
+          <p>Modern technology including digital imaging and advanced treatment tools.</p>
+        </div>
+        <div class="feature-item">
+          <i class="fas fa-check-circle"></i>
+          <h3>Safe & Sterile Clinic</h3>
+          <p>International-grade sterilization protocols for your safety.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+      <div class="section-header">
+        <h2><i class="fas fa-question-circle"></i> Frequently Asked Questions</h2>
+        <p>Common questions about our dental services</p>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item" *ngFor="let faq of faqs" (click)="toggleFaq(faq)" [class.active]="faq.open">
+          <div class="faq-question">
+            <h3>{{ faq.question }}</h3>
+            <i class="fas" [class.fa-plus]="!faq.open" [class.fa-minus]="faq.open"></i>
+          </div>
+          <div class="faq-answer" *ngIf="faq.open">
+            <p>{{ faq.answer }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3><i class="fas fa-clinic-medical"></i> Bright Smile Dental Clinic</h3>
+        <p>We go beyond treating teeth — we build long-lasting smiles backed by trust, technology, and patient-first care.</p>
+      </div>
+      <div class="footer-section">
+        <h3><i class="fas fa-clock"></i> Opening Hours</h3>
+        <p *ngFor="let hour of doctor?.workingHours">
+          {{ getDayName(hour.day) }}: {{ hour.start }} - {{ hour.end }}
+        </p>
+      </div>
+      <div class="footer-section">
+        <h3><i class="fas fa-phone"></i> Contact Us</h3>
+        <p><i class="fas fa-phone-alt"></i> {{ doctor?.contact?.phone }}</p>
+        <p><i class="fas fa-envelope"></i> {{ doctor?.contact?.email }}</p>
+        <p><i class="fas fa-map-marker-alt"></i> {{ doctor?.contact?.address }}</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 Bright Smile Dental Clinic. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <section class="error-section" *ngIf="error">
+    <div class="error-message">
+      <p>{{ error }}</p>
+      <button (click)="loadDoctor()" class="btn-secondary">Retry</button>
+    </div>
+  </section>
+
+  <div class="loading" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Loading...</p>
+  </div>
+</div>

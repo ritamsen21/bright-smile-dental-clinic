@@ -1,0 +1,75 @@
+<div class="login-container">
+  <header class="page-header">
+    <div class="header-top-nav">
+      <a routerLink="/" class="nav-link"><i class="fas fa-home"></i> Home</a>
+      <a routerLink="/book-appointment" class="nav-link"><i class="fas fa-calendar-plus"></i> Book Appointment</a>
+      <a routerLink="/appointments" class="nav-link"><i class="fas fa-calendar-alt"></i> Appointments</a>
+    </div>
+    <div class="header-icon"><i class="fas fa-user-md"></i></div>
+    <h1><i class="fas fa-sign-in-alt"></i> Doctor Sign In</h1>
+    <p>Access your patient dashboard</p>
+  </header>
+
+  <div class="content">
+    <div class="login-card">
+      <div class="card-header">
+        <i class="fas fa-stethoscope"></i>
+        <h2>Welcome Back, Doctor</h2>
+        <p>Sign in to view and manage patient appointments</p>
+      </div>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+        <div class="form-group">
+          <label for="email"><i class="fas fa-envelope"></i> Email Address *</label>
+          <input
+            type="email"
+            id="email"
+            formControlName="email"
+            class="form-control"
+            [class.is-invalid]="f['email'].invalid && f['email'].touched"
+            placeholder="doctor@example.com"
+          />
+          <div class="invalid-feedback" *ngIf="f['email'].invalid && f['email'].touched">
+            <span *ngIf="f['email'].errors?.['required']">Email is required</span>
+            <span *ngIf="f['email'].errors?.['email']">Please enter a valid email</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password"><i class="fas fa-lock"></i> Password *</label>
+          <input
+            type="password"
+            id="password"
+            formControlName="password"
+            class="form-control"
+            [class.is-invalid]="f['password'].invalid && f['password'].touched"
+            placeholder="Enter your password"
+          />
+          <div class="invalid-feedback" *ngIf="f['password'].invalid && f['password'].touched">
+            <span *ngIf="f['password'].errors?.['required']">Password is required</span>
+            <span *ngIf="f['password'].errors?.['minlength']">Password must be at least 6 characters</span>
+          </div>
+        </div>
+
+        <div class="error-message" *ngIf="error">
+          <i class="fas fa-exclamation-circle"></i> {{ error }}
+        </div>
+
+        <div class="form-actions">
+          <button type="button" routerLink="/" class="btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Home
+          </button>
+          <button type="submit" class="btn-primary" [disabled]="loading">
+            <span *ngIf="!loading"><i class="fas fa-sign-in-alt"></i> Sign In</span>
+            <span *ngIf="loading"><i class="fas fa-spinner fa-spin"></i> Signing In...</span>
+          </button>
+        </div>
+      </form>
+
+      <div class="info-note">
+        <i class="fas fa-info-circle"></i>
+        <p>For security purposes, only authorized doctors can access patient information.</p>
+      </div>
+    </div>
+  </div>
+</div>

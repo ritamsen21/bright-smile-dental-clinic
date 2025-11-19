@@ -1,0 +1,185 @@
+<div class="patients-container">
+  <header class="page-header">
+    <div class="header-content">
+      <div class="header-left">
+        <div class="header-icon"><i class="fas fa-user-md"></i></div>
+        <div>
+          <h1><i class="fas fa-clipboard-list"></i> Patient Dashboard</h1>
+          <p>Manage and view all patient appointments</p>
+        </div>
+      </div>
+      <button (click)="logout()" class="btn-logout">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </button>
+    </div>
+  </header>
+
+  <div class="content">
+    <div class="stats-bar">
+      <div class="stat-card">
+        <i class="fas fa-users"></i>
+        <div class="stat-info">
+          <span class="stat-number">{{ getTotalPatients() }}</span>
+          <span class="stat-label">Total Patients</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <i class="fas fa-calendar-day"></i>
+        <div class="stat-info">
+          <span class="stat-number">{{ getTodayAppointments().length }}</span>
+          <span class="stat-label">Today's Appointments</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <i class="fas fa-calendar-alt"></i>
+        <div class="stat-info">
+          <span class="stat-number">{{ getUpcomingAppointments().length }}</span>
+          <span class="stat-label">Upcoming</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <i class="fas fa-history"></i>
+        <div class="stat-info">
+          <span class="stat-number">{{ getPastAppointments().length }}</span>
+          <span class="stat-label">Past Visits</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="appointments-content" *ngIf="!loading && !error">
+      <section class="appointments-section" *ngIf="getTodayAppointments().length > 0">
+        <h2><i class="fas fa-calendar-day"></i> Today's Appointments</h2>
+        <div class="appointments-list">
+          <div class="appointment-card" *ngFor="let appointment of getTodayAppointments()">
+            <div class="appointment-header">
+              <div class="patient-info">
+                <h3><i class="fas fa-user"></i> {{ appointment.patient.fullName }}</h3>
+                <p class="email"><i class="fas fa-envelope"></i> {{ appointment.patient.email }}</p>
+                <p class="phone"><i class="fas fa-phone"></i> {{ appointment.patient.phone }}</p>
+              </div>
+              <span class="status-badge" [ngClass]="getStatusClass(appointment.status)">
+                {{ appointment.status }}
+              </span>
+            </div>
+
+            <div class="appointment-details">
+              <div class="detail-row">
+                <strong><i class="fas fa-calendar"></i> Date</strong>
+                <span>{{ formatDate(appointment.scheduledFor) }}</span>
+              </div>
+              <div class="detail-row">
+                <strong><i class="fas fa-clock"></i> Time</strong>
+                <span>{{ formatTime(appointment.scheduledFor) }}</span>
+              </div>
+              <div class="detail-row">
+                <strong><i class="fas fa-rupee-sign"></i> Consultation Fee</strong>
+                <span class="fee">₹{{ appointment.doctor.visitFee }}</span>
+              </div>
+            </div>
+
+            <div class="notes" *ngIf="appointment.notes">
+              <strong><i class="fas fa-notes-medical"></i> Patient Notes</strong>
+              <p>{{ appointment.notes }}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="appointments-section" *ngIf="getUpcomingAppointments().length > 0">
+        <h2><i class="fas fa-calendar-alt"></i> Upcoming Appointments</h2>
+        <div class="appointments-list">
+          <div class="appointment-card" *ngFor="let appointment of getUpcomingAppointments()">
+            <div class="appointment-header">
+              <div class="patient-info">
+                <h3><i class="fas fa-user"></i> {{ appointment.patient.fullName }}</h3>
+                <p class="email"><i class="fas fa-envelope"></i> {{ appointment.patient.email }}</p>
+                <p class="phone"><i class="fas fa-phone"></i> {{ appointment.patient.phone }}</p>
+              </div>
+              <span class="status-badge" [ngClass]="getStatusClass(appointment.status)">
+                {{ appointment.status }}
+              </span>
+            </div>
+
+            <div class="appointment-details">
+              <div class="detail-row">
+                <strong><i class="fas fa-calendar"></i> Date</strong>
+                <span>{{ formatDate(appointment.scheduledFor) }}</span>
+              </div>
+              <div class="detail-row">
+                <strong><i class="fas fa-clock"></i> Time</strong>
+                <span>{{ formatTime(appointment.scheduledFor) }}</span>
+              </div>
+              <div class="detail-row">
+                <strong><i class="fas fa-rupee-sign"></i> Consultation Fee</strong>
+                <span class="fee">₹{{ appointment.doctor.visitFee }}</span>
+              </div>
+            </div>
+
+            <div class="notes" *ngIf="appointment.notes">
+              <strong><i class="fas fa-notes-medical"></i> Patient Notes</strong>
+              <p>{{ appointment.notes }}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="appointments-section" *ngIf="getPastAppointments().length > 0">
+        <h2><i class="fas fa-history"></i> Past Appointments</h2>
+        <div class="appointments-list">
+          <div class="appointment-card past" *ngFor="let appointment of getPastAppointments()">
+            <div class="appointment-header">
+              <div class="patient-info">
+                <h3><i class="fas fa-user"></i> {{ appointment.patient.fullName }}</h3>
+                <p class="email"><i class="fas fa-envelope"></i> {{ appointment.patient.email }}</p>
+                <p class="phone"><i class="fas fa-phone"></i> {{ appointment.patient.phone }}</p>
+              </div>
+              <span class="status-badge" [ngClass]="getStatusClass(appointment.status)">
+                {{ appointment.status }}
+              </span>
+            </div>
+
+            <div class="appointment-details">
+              <div class="detail-row">
+                <strong><i class="fas fa-calendar"></i> Date</strong>
+                <span>{{ formatDate(appointment.scheduledFor) }}</span>
+              </div>
+              <div class="detail-row">
+                <strong><i class="fas fa-clock"></i> Time</strong>
+                <span>{{ formatTime(appointment.scheduledFor) }}</span>
+              </div>
+              <div class="detail-row">
+                <strong><i class="fas fa-rupee-sign"></i> Consultation Fee</strong>
+                <span class="fee">₹{{ appointment.doctor.visitFee }}</span>
+              </div>
+            </div>
+
+            <div class="notes" *ngIf="appointment.notes">
+              <strong><i class="fas fa-notes-medical"></i> Patient Notes</strong>
+              <p>{{ appointment.notes }}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="no-appointments" *ngIf="appointments.length === 0">
+        <div class="empty-icon"><i class="fas fa-calendar-times"></i></div>
+        <p>No patient appointments found</p>
+      </div>
+    </div>
+
+    <div class="loading" *ngIf="loading">
+      <div class="spinner"><i class="fas fa-spinner fa-spin"></i></div>
+      <p>Loading patient data...</p>
+    </div>
+
+    <div class="error-section" *ngIf="error">
+      <div class="error-message">
+        <i class="fas fa-exclamation-triangle"></i>
+        <p>{{ error }}</p>
+        <button (click)="loadAppointments()" class="btn-retry">
+          <i class="fas fa-redo"></i> Retry
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,111 @@
+<div class="appointments-container">
+  <header class="page-header">
+    <div class="header-top-nav">
+      <a routerLink="/" class="nav-link"><i class="fas fa-home"></i> Home</a>
+      <a routerLink="/book-appointment" class="nav-link"><i class="fas fa-calendar-plus"></i> Book Appointment</a>
+      <a routerLink="/doctor/login" class="nav-link"><i class="fas fa-user-md"></i> Doctor Login</a>
+    </div>
+    <div class="header-icon"><i class="fas fa-clipboard-list"></i></div>
+    <h1><i class="fas fa-calendar-alt"></i> Appointments</h1>
+    <p>View and manage your appointments</p>
+  </header>
+
+  <div class="content">
+    <div class="actions-bar">
+      <a routerLink="/book-appointment" class="btn-primary"><i class="fas fa-plus"></i> Book New Appointment</a>
+      <a routerLink="/" class="btn-secondary"><i class="fas fa-home"></i> Back to Home</a>
+    </div>
+
+    <div class="appointments-content" *ngIf="!loading">
+      <section class="appointments-section" *ngIf="getUpcomingAppointments().length > 0">
+        <h2><i class="fas fa-clock"></i> Upcoming Appointments</h2>
+        <div class="appointments-list">
+          <div class="appointment-card" *ngFor="let appointment of getUpcomingAppointments()">
+            <div class="appointment-header">
+              <div class="patient-info">
+                <h3>{{ appointment.patient.fullName }}</h3>
+                <p class="email">{{ appointment.patient.email }}</p>
+                <p class="phone">{{ appointment.patient.phone }}</p>
+              </div>
+              <div class="status-badge" [ngClass]="getStatusClass(appointment.status)">
+                {{ appointment.status }}
+              </div>
+            </div>
+
+            <div class="appointment-details">
+              <div class="detail-row">
+                <strong>Doctor:</strong>
+                <span>{{ appointment.doctor.name }}</span>
+              </div>
+              <div class="detail-row">
+                <strong>Date:</strong>
+                <span>{{ formatDate(appointment.scheduledFor) }}</span>
+              </div>
+              <div class="detail-row">
+                <strong>Time:</strong>
+                <span>{{ formatTime(appointment.scheduledFor) }}</span>
+              </div>
+              <div class="detail-row">
+                <strong>Fee:</strong>
+                <span class="fee">₹{{ appointment.visitFee }}</span>
+              </div>
+            </div>
+
+            <div class="notes" *ngIf="appointment.notes">
+              <strong>Notes:</strong>
+              <p>{{ appointment.notes }}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="appointments-section" *ngIf="getPastAppointments().length > 0">
+        <h2><i class="fas fa-history"></i> Past Appointments</h2>
+        <div class="appointments-list">
+          <div class="appointment-card past" *ngFor="let appointment of getPastAppointments()">
+            <div class="appointment-header">
+              <div class="patient-info">
+                <h3>{{ appointment.patient.fullName }}</h3>
+                <p class="email">{{ appointment.patient.email }}</p>
+              </div>
+              <div class="status-badge" [ngClass]="getStatusClass(appointment.status)">
+                {{ appointment.status }}
+              </div>
+            </div>
+
+            <div class="appointment-details">
+              <div class="detail-row">
+                <strong>Doctor:</strong>
+                <span>{{ appointment.doctor.name }}</span>
+              </div>
+              <div class="detail-row">
+                <strong>Date:</strong>
+                <span>{{ formatDate(appointment.scheduledFor) }}</span>
+              </div>
+              <div class="detail-row">
+                <strong>Fee:</strong>
+                <span class="fee">₹{{ appointment.visitFee }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="no-appointments" *ngIf="appointments.length === 0">
+        <div class="empty-icon"><i class="fas fa-calendar-times"></i></div>
+        <p>No appointments found</p>
+        <a routerLink="/book-appointment" class="btn-primary"><i class="fas fa-tooth"></i> Book Your First Appointment</a>
+      </div>
+    </div>
+
+    <div class="loading" *ngIf="loading">
+      <div class="spinner"></div>
+      <p>Loading appointments...</p>
+    </div>
+
+    <div class="error-section" *ngIf="error && !loading">
+      <p>{{ error }}</p>
+      <button (click)="loadAppointments()" class="btn-secondary">Retry</button>
+    </div>
+  </div>
+</div>
