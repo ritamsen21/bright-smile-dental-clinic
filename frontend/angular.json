@@ -20,7 +20,6 @@
             "outputPath": "dist/frontend",
             "index": "src/index.html",
             "browser": "src/main.ts",
-            "baseHref": "/bright-smile-dental-clinic/",
             "polyfills": [
               "zone.js"
             ],
