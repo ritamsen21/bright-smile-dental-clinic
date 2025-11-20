@@ -1,7 +1,7 @@
 {
-  "buildCommand": "cd frontend && npm install && npm run build:prod",
+  "buildCommand": "cd frontend && npm ci || npm install && npm run build:prod",
   "outputDirectory": "frontend/dist/frontend/browser",
-  "installCommand": "cd frontend && npm install",
+  "installCommand": "cd frontend && npm install --legacy-peer-deps",
   "routes": [
     {
       "handle": "filesystem"
